@@ -56,8 +56,8 @@ main(int argc, char **argv)
 {   
     signal(SIGINT, signal_handler);
     signal(SIGPIPE, sigpipe_handlr);
-    if ((argc - 1) > 1) {
-        puts("A lot of arguments!!!");
+    if ((argc - 1) != 1) {
+        fputs("Wrong amount of arguments!!!", stderr);
         return 1;
     }
     int father_fd[2];
@@ -112,7 +112,7 @@ main(int argc, char **argv)
                 ERR(write(son_fd[1], answer, size_of_ans), -1)
                 char verdict[2];
                 ERR(read(father_fd[0], verdict, sizeof(verdict)), -1)
-                if (!strcmp(verdict, "OK")) {
+                if (!memcmp(verdict, "OK", sizeof(verdict))) {
                     statistic[i] = '+';
                 } else {
                     statistic[i] = '-';
